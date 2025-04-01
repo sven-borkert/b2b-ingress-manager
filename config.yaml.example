@@ -1,0 +1,24 @@
+# NFTables Manager Configuration
+
+# Log level: debug, info, warn, error
+log_level: info
+
+# Database connection parameters
+db_host: localhost
+db_port: 5432
+db_user: postgres
+db_password: ""
+db_name: nftables
+db_sslmode: disable
+
+# API server configuration
+api_listen: ":8080"
+
+# Update and health check intervals
+update_interval: 30s
+health_timeout: 5s
+health_interval: 60s
+
+# NFTables configuration
+nft_table: nat
+nft_chain: prerouting 
