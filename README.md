@@ -27,13 +27,13 @@ A Golang application to manage nftables configuration on a Linux server, allowin
 
 ```bash
 git clone https://github.com/sven-borkert/b2b-ingress-manager.git
-cd nftables-manager
+cd b2b-ingress-manager
 ```
 
 2. Build the application:
 
 ```bash
-go build -o nftables-manager ./cmd/server
+go build -o b2b-ingress-manager ./cmd/server
 ```
 
 3. Create the PostgreSQL database:
@@ -98,7 +98,7 @@ By default, the application will look for a `config.yaml` file in the current di
 The application can also be configured via command-line flags:
 
 ```
-Usage of nftables-manager:
+Usage of b2b-ingress-manager:
   -config string
         Path to configuration file (default "config.yaml")
   -api-listen string
@@ -136,13 +136,13 @@ Command-line flags take precedence over configuration file settings. This allows
 Start the application with a configuration file:
 
 ```bash
-sudo ./nftables-manager -config=/path/to/config.yaml
+sudo ./b2b-ingress-manager -config=/path/to/config.yaml
 ```
 
 Or with command-line parameters:
 
 ```bash
-sudo ./nftables-manager \
+sudo ./b2b-ingress-manager \
   -db-host localhost \
   -db-port 5432 \
   -db-user postgres \
