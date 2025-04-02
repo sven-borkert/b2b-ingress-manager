@@ -21,6 +21,7 @@ type Manager struct {
 	mu              sync.Mutex
 	table           *nftables.Table
 	chainPrerouting *nftables.Chain
+	rng             *rand.Rand
 }
 
 // Config for the nftables manager
@@ -33,8 +34,8 @@ type Config struct {
 func NewManager(config Config, logger *logrus.Logger) (*Manager, error) {
 	conn := &nftables.Conn{}
 
-	// Seed random for backend selection
-	rand.Seed(time.Now().UnixNano())
+	// Create a local random number generator
+	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	// Create the table if it doesn't exist
 	table := &nftables.Table{
@@ -56,6 +57,7 @@ func NewManager(config Config, logger *logrus.Logger) (*Manager, error) {
 		logger:          logger,
 		table:           table,
 		chainPrerouting: chainPrerouting,
+		rng:             rng,
 	}
 
 	return manager, nil
@@ -261,7 +263,7 @@ func (m *Manager) generateExpressionsForRule(rule models.Rule, addresses []model
 	}
 
 	// Select a random backend address
-	selectedAddress := addresses[rand.Intn(len(addresses))]
+	selectedAddress := addresses[m.rng.Intn(len(addresses))]
 	destIP := net.ParseIP(selectedAddress.IP).To4()
 	if destIP == nil {
 		return nil, fmt.Errorf("invalid backend IP address: %s", selectedAddress.IP)
